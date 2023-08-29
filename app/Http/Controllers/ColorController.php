@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Color;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ColorController extends Controller
 {
@@ -14,7 +15,6 @@ class ColorController extends Controller
      */
     public function index()
     {
-        $responseMock;
         try {
             $colores = Color::all();
             $responseMock = ['msg' => "ok",'stauts' => 200,'data' => $colores];
@@ -34,7 +34,23 @@ class ColorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Comienza una transacción la cual en caso de que todo salga bien guarda los cambios, en caso de error, elimina lo guardado en caso
+        //de que algo se haya guardado
+        DB::beginTransaction();
+        try {
+            $color = new Color();
+            $color = $request->input('nombre');
+            $color->save();
+            DB::commit();
+            $colores = Color::All();
+            $responseMock = ["status"=>200,"msg"=>"ok","data" => $colores];
+            return response()->json($responseMock,200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB:rollback();
+            $responseMock = ["msg"=>"error al momento de crear los datos"];
+            return response()->json($responseMock,500);
+        }
     }
 
     /**
