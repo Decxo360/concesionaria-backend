@@ -18,7 +18,7 @@ class CreatePesadosTable extends Migration
             $table->foreign('idvehciulo').references('idvehiculo')->on('vehiculos');
             $table->integer('hp');
             $table->string('traccion',45);
-            $table->tinyInteger('trubo_inter_after');
+            $table->tinyInteger('turbo_inter_after');
             $table->tinyInteger('tipo_frenos');
             $table->string('otros_frenos',45);
             $table->string('caja',45);
