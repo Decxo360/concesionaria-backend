@@ -14,9 +14,31 @@ use App\Models\Color;
 class Vehiculo extends Model
 {
     use HasFactory;
+
     public $timestamps=false;
+
     protected $primaryKey = "idvehiculo";
+
     protected $hidden = ["idusuario","idcolor","iddueno","idmodelo"];
+
+    protected $fillable= [
+        "idcolor",
+        "tipo",
+        "ano",
+        "cc",
+        "kilometros",
+        "revtecnica",
+        "llantas",
+        "otros",
+        "patente",
+        "costo",
+        "gasto",
+        "comision",
+        "valor_venta",
+        "valor",
+        "estado",
+        "comustible"
+    ];
 
     public function dueno(){
         return $this -> belongsTo(Dueno::class,"iddueno");
