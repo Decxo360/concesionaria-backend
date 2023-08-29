@@ -17,10 +17,13 @@ class Vehiculo extends Model
 
     public $timestamps=false;
 
+    //Como se llama la primary key del tabla vehiculo
     protected $primaryKey = "idvehiculo";
 
+    //Variables que no quiero visualizar al utilizar un metodo GET
     protected $hidden = ["idusuario","idcolor","iddueno","idmodelo"];
 
+    // Elementos que puede ser asignados masivamente
     protected $fillable= [
         "idcolor",
         "tipo",
@@ -40,6 +43,9 @@ class Vehiculo extends Model
         "comustible"
     ];
 
+    //Relaciones
+
+    //relaciones belongsTo -> pertenece a. Ejemplo: este vehiculo pertenece a un dueno
     public function dueno(){
         return $this -> belongsTo(Dueno::class,"iddueno");
     }
