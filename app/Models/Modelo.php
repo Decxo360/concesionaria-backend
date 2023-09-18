@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Marca;
+use App\Models\Marcas;
 
 class Modelo extends Model
 {
@@ -13,6 +13,6 @@ class Modelo extends Model
     public $timestamps=false;
     
     public function marca(){
-        return $this->belongsTo(Marca::class,"idmarca");
+        return $this->belongsTo(Marcas::class,"idmarca");
     }
 }
