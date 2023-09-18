@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 
 use App\Models\Vehiculo;
@@ -31,6 +34,24 @@ class VehiculoController extends Controller
         } catch (\Throwable $th) {
             return response()->json(["error"=>$th,"msg"=>"false","status"=>500],500);
         }
+    }
+
+    public function pdf(Request $request){
+        
+        $vehiculos = Vehiculo::with('dueno','modelo','color','modelo.marca')->get();  
+        $pdf = Pdf::loadView('vehiculos.pdf',compact('vehiculos'));
+        $pdf->stream();
+
+        // $filename = 'Informe_vehiculos.pdf';
+        // Storage::disk('public')->put($filename,$pdf->output());
+
+        // return $pdf->download('vehiculos.pdf');
+        return  $pdf->stream();;
+    }
+
+    public function excel(){
+        $vehiculos = Vehiculo::with('dueno','modelo','color','modelo.marca')->get();
+        return view('vehiculos.excel')->with('vehiculos', $vehiculos);
     }
 
     /**
