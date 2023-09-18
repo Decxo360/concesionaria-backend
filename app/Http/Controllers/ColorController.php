@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Color;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Http\Responses\ApiResponse;
+use Illuminate\Validation\ValidationException;
 
 class ColorController extends Controller
 {
@@ -38,6 +40,9 @@ class ColorController extends Controller
         //de que algo se haya guardado
         DB::beginTransaction();
         try {
+            $validator = $request->validate([
+                "nombre"=>'required'
+            ]);
             $color = new Color();
             $color = $request->input('nombre');
             $color->save();
@@ -46,10 +51,11 @@ class ColorController extends Controller
             $responseMock = ["status"=>200,"msg"=>"ok","data" => $colores];
             return response()->json($responseMock,200);
         } catch (\Throwable $th) {
-            //throw $th;
             DB:rollback();
             $responseMock = ["msg"=>"error al momento de crear los datos"];
             return response()->json($responseMock,500);
+        }catch(ValidationException $e){
+            return ApiResponse::error("Error de validación",422,[],$e.getMessage());
         }
     }
 
